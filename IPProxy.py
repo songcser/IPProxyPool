@@ -3,11 +3,13 @@
 from multiprocessing import Value, Queue, Process
 from api.apiServer import start_api_server
 from db.DataStore import store_data
+from gevent import monkey
 
 from validator.Validator import validator, getMyIP
 from spider.ProxyCrawl import startProxyCrawl
 
 if __name__ == "__main__":
+    monkey.patch_all()
     myip = getMyIP()
     DB_PROXY_NUM = Value('i', 0)
     q1 = Queue()

@@ -104,7 +104,7 @@ DB_CONFIG = {
 
     'DB_CONNECT_TYPE': 'sqlalchemy',  # 'pymongo'sqlalchemy
     # 'DB_CONNECT_STRING':'mongodb://localhost:27017/'
-    'DB_CONNECT_STRING': 'sqlite:///' + os.path.dirname(__file__) + '/data/proxy.db'
+    'DB_CONNECT_STRING': 'postgresql+psycopg2://postgres:postgres@db/postgres'
     # DB_CONNECT_STRING = 'mysql+mysqldb://root:root@localhost/proxy?charset=utf8'
 
 
@@ -122,7 +122,7 @@ API_PORT = 8000
 爬虫爬取和检测ip的设置条件
 不需要检测ip是否已经存在，因为会定时清理
 '''
-UPDATE_TIME = 60 * 60  # 每一个小时检测一次是否有代理ip失效
+UPDATE_TIME = 60 * 1  # 每一个小时检测一次是否有代理ip失效
 MINNUM = 40  # 当有效的ip值小于一个时 需要启动爬虫进行爬取
 MAXTIME = 3 * 24 * 60  # 当爬取存储开始一直使用的最大时间，如果超过这个时间，都删除
 
