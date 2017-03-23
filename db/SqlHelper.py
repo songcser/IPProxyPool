@@ -118,19 +118,24 @@ class SqlHelper(ISqlHelper):
         else:
             conditions = []
 
-        query = self.session.query(Proxy.ip, Proxy.port, Proxy.score, Proxy.protocol)
-        if len(conditions) > 0 and count:
-            for condition in conditions:
-                query = query.filter(condition)
-            return query.order_by(Proxy.score.desc(), Proxy.speed).limit(count).all()
-        elif count:
-            return query.order_by(Proxy.score.desc(), Proxy.speed).limit(count).all()
-        elif len(conditions) > 0:
-            for condition in conditions:
-                query = query.filter(condition)
-            return query.order_by(Proxy.score.desc(), Proxy.speed).all()
-        else:
-            return query.order_by(Proxy.score.desc(), Proxy.speed).all()
+        try:
+            query = self.session.query(Proxy.ip, Proxy.port, Proxy.score, Proxy.protocol)
+            if len(conditions) > 0 and count:
+                for condition in conditions:
+                    query = query.filter(condition)
+                return query.order_by(Proxy.score.desc(), Proxy.speed).limit(count).all()
+            elif count:
+                return query.order_by(Proxy.score.desc(), Proxy.speed).limit(count).all()
+            elif len(conditions) > 0:
+                for condition in conditions:
+                    query = query.filter(condition)
+                return query.order_by(Proxy.score.desc(), Proxy.speed).all()
+            else:
+                return query.order_by(Proxy.score.desc(), Proxy.speed).all()
+        except Exception as e:
+            self.session.rollback()
+        finally:
+            self.session.commit()
 
 
     def close(self):
